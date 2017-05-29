@@ -31,8 +31,8 @@ class BoletoSantander(BoletoData):
     #: ignorar os 2 primeiros
     conta_cedente = CustomProperty('conta_cedente', 7)
 
-    def __init__(self):
-        super(BoletoSantander, self).__init__()
+    def __init__(self, **kwargs):
+        super(BoletoSantander, self).__init__(**kwargs)
 
         self.codigo_banco = "033"
         self.logo_image = "logo_santander.jpg"
@@ -61,3 +61,50 @@ class BoletoSantander(BoletoData):
                            self.carteira,
                            ])
         return content
+
+
+class BoletoRegistradoSantander(BoletoSantander):
+    '''
+        Create necessary data for registered boleto on Santander
+    '''
+
+    def __init__(self, **kwargs):
+        self.nosso_numero = kwargs.pop('nosso_numero', '')
+        self.code_line = kwargs.pop('linha_digitavel', '')
+        self.codigo_barras = kwargs.pop('barcode', '')
+        self.valor_documento = kwargs.pop('valor_documento', '')
+        self.instrucoes = kwargs.pop('instrucoes', [])
+        super(BoletoRegistradoSantander, self).__init__(**kwargs)
+
+    def nosso_numero_by_santander(self):
+        """ On new Webservice for boleto,
+            santander can create their own
+            our_number with 13 and without dv
+        """
+        return len(self.nosso_numero) == 13
+
+    def format_nosso_numero(self):
+        if self.nosso_numero_by_santander():
+            return self.nosso_numero
+
+        return super(BoletoRegistradoSantander, self).format_nosso_numero()
+
+    def _dv_nosso_numero(self):
+        if self.nosso_numero_by_santander():
+            return ''
+
+        return super(BoletoRegistradoSantander, self)._dv_nosso_numero()
+
+    @property
+    def linha_digitavel(self):
+        if self.code_line:
+            return self.code_line
+
+        return super(BoletoRegistradoSantander, self).linha_digitavel
+
+    @property
+    def barcode(self):
+        if self.codigo_barras:
+            return self.codigo_barras
+
+        return super(BoletoSantander, self).barcode
