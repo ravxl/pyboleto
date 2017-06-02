@@ -69,28 +69,27 @@ class BoletoRegistradoSantander(BoletoSantander):
     '''
 
     def __init__(self, **kwargs):
-        self.nosso_numero = kwargs.pop('nosso_numero', '')
-        self.code_line = kwargs.pop('linha_digitavel', '')
-        self.codigo_barras = kwargs.pop('barcode', '')
-        self.valor_documento = kwargs.pop('valor_documento', '')
-        self.instrucoes = kwargs.pop('instrucoes', [])
         super(BoletoRegistradoSantander, self).__init__(**kwargs)
 
+        self.carteira = '101'
+
+    @property
     def nosso_numero_by_santander(self):
         """ On new Webservice for boleto,
             santander can create their own
-            our_number with 13 and without dv
+            nosso_numero with 13 digits
+            and without dv
         """
         return len(self.nosso_numero) == 13
 
     def format_nosso_numero(self):
-        if self.nosso_numero_by_santander():
+        if self.nosso_numero_by_santander:
             return self.nosso_numero
 
         return super(BoletoRegistradoSantander, self).format_nosso_numero()
 
     def _dv_nosso_numero(self):
-        if self.nosso_numero_by_santander():
+        if self.nosso_numero_by_santander:
             return ''
 
         return super(BoletoRegistradoSantander, self)._dv_nosso_numero()
