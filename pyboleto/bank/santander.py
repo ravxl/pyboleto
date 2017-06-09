@@ -15,6 +15,7 @@
 
 """
 from pyboleto.data import BoletoData, CustomProperty
+from pyboleto.pdf import BoletoFields
 
 
 class BoletoSantander(BoletoData):
@@ -63,6 +64,13 @@ class BoletoSantander(BoletoData):
         return content
 
 
+class SantanderBoletoFields(BoletoFields):
+    RECIDO_SACADO = 'Recibo do Pagador'
+    SACADO = 'Pagador'
+    CEDENTE = 'Beneficiário'
+    AG_COD_CEDENTE = 'Agência/ Código Beneficiário'
+
+
 class BoletoRegistradoSantander(BoletoSantander):
     '''
         Create necessary data for registered boleto on Santander
@@ -72,6 +80,7 @@ class BoletoRegistradoSantander(BoletoSantander):
         super(BoletoRegistradoSantander, self).__init__(**kwargs)
 
         self.carteira = '101'
+        self.fields = SantanderBoletoFields
 
     @property
     def nosso_numero_by_santander(self):

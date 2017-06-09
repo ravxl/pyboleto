@@ -86,7 +86,7 @@
     <text font="31" height="8" left="339" top="520" width="49">Esp&#233;cie doc</text>
     <text font="0" height="8" left="424" top="520" width="25">Aceite</text>
     <text font="32" height="8" left="509" top="520" width="83">Data processamento</text>
-    <text font="33" height="8" left="658" top="520" width="59">Nosso n&#250;mero</text>
+    <text font="33" height="8" left="658" top="520" width="60">Nosso N&#250;mero</text>
     <text font="1" height="12" left="38" top="530" width="68">19/10/2009</text>
     <text font="1" height="12" left="169" top="530" width="23">456</text>
     <text font="1" height="12" left="339" top="530" width="21">DM</text>
@@ -94,7 +94,7 @@
     <text font="1" height="12" left="509" top="530" width="68">19/10/2009</text>
     <text font="1" height="12" left="742" top="530" width="98">109/00000157-1</text>
     <text font="0" height="8" left="38" top="492" width="34">Cedente</text>
-    <text font="34" height="8" left="658" top="492" width="98">Ag&#234;ncia/C&#243;digo cedente</text>
+    <text font="34" height="8" left="658" top="492" width="100">Ag&#234;ncia/C&#243;digo Cedente</text>
     <text font="1" height="12" left="757" top="503" width="83">0293/01328-0</text>
     <text font="36" height="8" left="38" top="464" width="82">Local de pagamento</text>
     <text font="0" height="8" left="658" top="464" width="48">Vencimento</text>
@@ -152,7 +152,7 @@
     <text font="31" height="8" left="339" top="520" width="49">Esp&#233;cie doc</text>
     <text font="0" height="8" left="424" top="520" width="25">Aceite</text>
     <text font="32" height="8" left="509" top="520" width="83">Data processamento</text>
-    <text font="33" height="8" left="658" top="520" width="59">Nosso n&#250;mero</text>
+    <text font="33" height="8" left="658" top="520" width="60">Nosso N&#250;mero</text>
     <text font="1" height="12" left="38" top="530" width="68">19/10/2009</text>
     <text font="1" height="12" left="169" top="530" width="23">457</text>
     <text font="1" height="12" left="339" top="530" width="21">DM</text>
@@ -160,7 +160,7 @@
     <text font="1" height="12" left="509" top="530" width="68">19/10/2009</text>
     <text font="1" height="12" left="742" top="530" width="98">109/00000158-9</text>
     <text font="0" height="8" left="38" top="492" width="34">Cedente</text>
-    <text font="34" height="8" left="658" top="492" width="98">Ag&#234;ncia/C&#243;digo cedente</text>
+    <text font="34" height="8" left="658" top="492" width="100">Ag&#234;ncia/C&#243;digo Cedente</text>
     <text font="1" height="12" left="757" top="503" width="83">0293/01328-0</text>
     <text font="36" height="8" left="38" top="464" width="82">Local de pagamento</text>
     <text font="0" height="8" left="658" top="464" width="48">Vencimento</text>
@@ -218,7 +218,7 @@
     <text font="31" height="8" left="339" top="520" width="49">Esp&#233;cie doc</text>
     <text font="0" height="8" left="424" top="520" width="25">Aceite</text>
     <text font="32" height="8" left="509" top="520" width="83">Data processamento</text>
-    <text font="33" height="8" left="658" top="520" width="59">Nosso n&#250;mero</text>
+    <text font="33" height="8" left="658" top="520" width="60">Nosso N&#250;mero</text>
     <text font="1" height="12" left="38" top="530" width="68">19/10/2009</text>
     <text font="1" height="12" left="169" top="530" width="23">458</text>
     <text font="1" height="12" left="339" top="530" width="21">DM</text>
@@ -226,7 +226,7 @@
     <text font="1" height="12" left="509" top="530" width="68">19/10/2009</text>
     <text font="1" height="12" left="742" top="530" width="98">109/00000159-7</text>
     <text font="0" height="8" left="38" top="492" width="34">Cedente</text>
-    <text font="34" height="8" left="658" top="492" width="98">Ag&#234;ncia/C&#243;digo cedente</text>
+    <text font="34" height="8" left="658" top="492" width="100">Ag&#234;ncia/C&#243;digo Cedente</text>
     <text font="1" height="12" left="757" top="503" width="83">0293/01328-0</text>
     <text font="36" height="8" left="38" top="464" width="82">Local de pagamento</text>
     <text font="0" height="8" left="658" top="464" width="48">Vencimento</text>
