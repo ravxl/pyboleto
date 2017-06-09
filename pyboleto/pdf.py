@@ -19,6 +19,41 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen import canvas
 
 
+class BoletoFields(object):
+    SACADO = 'Sacado'
+    RECIDO_SACADO = 'Recibo do Sacado'
+    NOSSO_NUMERO = 'Nosso Número'
+    VENCIMENTO = 'Vencimento'
+    AG_COD_CEDENTE = 'Agência/Código Cedente'
+    CEDENTE = 'Cedente'
+    VALOR_DOC = 'Valor Documento'
+    VALOR_DOC_SIGN = '(=) Valor documento'
+    AUTENTICACAO_MEC = 'Autenticação Mecânica'
+    CPF_CNPJ_CEDENTE = 'CPF/CNPJ Cedente'
+    NUM_DOCUMENTO = 'N. do documento'
+    DATA_DOCUMENTO = 'Data do documento'
+    ENDERECO_CEDENTE = 'Endereço Cedente'
+    DEMONSTRATIVO = 'Demonstrativo'
+    COD_DE_BAIXA = 'Código de baixa'
+    AUT_MEC_FICHA_COMP = 'Autenticação Mecânica / Ficha de Compensação'
+    SACADOR_AVALISTA = 'Sacador / Avalista'
+    LOCAL_PAGAMENTO = 'Local de pagamento'
+    VALOR_COBRADO = '(=) Valor cobrado'
+    OUTROS_ACRESCIMOS = '(+) Outros acréscimos'
+    MORA_MULTA = '(+) Mora/Multa'
+    OUTRAS_DEDUCOES = '(-) Outras deduções'
+    DESCONTOS_ABATIMENTOS = '(-) Descontos/Abatimentos'
+    INSTRUCOES = 'Instruções'
+    USO_BANCO = 'Uso do banco'
+    CARTEIRA = 'Carteira'
+    ESPECIE = 'Espécie'
+    QUANTIDADE = 'Quantidade'
+    VALOR = 'Valor'
+    ESPECIE_DOC = 'Espécie doc'
+    ACEITE = 'Aceite'
+    DATA_PROCESSAMENTO = 'Data processamento'
+
+
 class BoletoPDF(object):
     """Geração do Boleto em PDF
 
@@ -53,6 +88,7 @@ class BoletoPDF(object):
 
         self.pdf_canvas = canvas.Canvas(file_descr, pagesize=pagesize)
         self.pdf_canvas.setStrokeColor(black)
+        self.fields = BoletoFields
 
     def _draw_recibo_sacado_canhoto(self, boleto_dados, x, y):
         """Imprime o Recibo do Sacado para modelo de carnê
@@ -97,9 +133,11 @@ class BoletoPDF(object):
                             self.height_line)
 
         self.pdf_canvas.setFont('Helvetica-Bold', 6)
-        self.pdf_canvas.drawRightString(self.width_canhoto,
-                                        0 * self.height_line + 3,
-                                        'Recibo do Sacado')
+        self.pdf_canvas.drawRightString(
+            self.width_canhoto,
+            0 * self.height_line + 3,
+            self.fields.RECIDO_SACADO
+        )
 
         # Titles
         self.pdf_canvas.setFont('Helvetica', 6)
@@ -108,22 +146,22 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             self.space,
             (((linha_inicial + 0) * self.height_line)) + self.delta_title,
-            'Nosso Número'
+            self.fields.NOSSO_NUMERO
         )
         self.pdf_canvas.drawString(
             self.width_canhoto - (35 * mm) + self.space,
             (((linha_inicial + 0) * self.height_line)) + self.delta_title,
-            'Vencimento'
+            self.fields.VENCIMENTO
         )
         self.pdf_canvas.drawString(
             self.space,
             (((linha_inicial + 1) * self.height_line)) + self.delta_title,
-            'Agência/Código Cedente'
+            self.fields.AG_COD_CEDENTE
         )
         self.pdf_canvas.drawString(
             self.width_canhoto - (35 * mm) + self.space,
             (((linha_inicial + 1) * self.height_line)) + self.delta_title,
-            'Valor Documento'
+            self.fields.VALOR_DOC
         )
 
         # Values
@@ -246,7 +284,7 @@ class BoletoPDF(object):
         self.pdf_canvas.drawRightString(
             self.width,
             (linha_inicial + 3) * self.height_line + 3,
-            'Recibo do Sacado'
+            self.fields.RECIDO_SACADO
         )
 
         # Titles
@@ -256,42 +294,45 @@ class BoletoPDF(object):
         self.pdf_canvas.drawRightString(
             self.width,
             self.height_line,
-            'Autenticação Mecânica'
+            self.fields.AUTENTICACAO_MEC
         )
 
         self.pdf_canvas.drawString(
             0,
             (((linha_inicial + 2) * self.height_line)) + self.delta_title,
-            'Cedente'
+            self.fields.CEDENTE
         )
         self.pdf_canvas.drawString(
             self.width - (30 * mm) - (35 * mm) - (40 * mm) + self.space,
             (((linha_inicial + 2) * self.height_line)) + self.delta_title,
-            'Agência/Código Cedente'
+            self.fields.AG_COD_CEDENTE
         )
         self.pdf_canvas.drawString(
             self.width - (30 * mm) - (35 * mm) + self.space,
             (((linha_inicial + 2) * self.height_line)) + self.delta_title,
-            'CPF/CNPJ Cedente'
+            self.fields.CPF_CNPJ_CEDENTE
         )
         self.pdf_canvas.drawString(
             self.width - (30 * mm) + self.space,
             (((linha_inicial + 2) * self.height_line)) + self.delta_title,
-            'Vencimento'
+            self.fields.VENCIMENTO
         )
 
         self.pdf_canvas.drawString(
             0,
             (((linha_inicial + 1) * self.height_line)) + self.delta_title,
-            'Sacado')
+            self.fields.SACADO
+        )
         self.pdf_canvas.drawString(
             self.width - (30 * mm) - (35 * mm) - (40 * mm) + self.space,
             (((linha_inicial + 1) * self.height_line)) + self.delta_title,
-            'Nosso Número')
+            self.fields.NOSSO_NUMERO
+        )
         self.pdf_canvas.drawString(
             self.width - (30 * mm) - (35 * mm) + self.space,
             (((linha_inicial + 1) * self.height_line)) + self.delta_title,
-            'N. do documento')
+            self.fields.NUM_DOCUMENTO
+        )
         self.pdf_canvas.drawString(
             self.width - (30 * mm) + self.space,
             (((linha_inicial + 1) * self.height_line)) + self.delta_title,
@@ -301,19 +342,19 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             0,
             (((linha_inicial + 0) * self.height_line)) + self.delta_title,
-            'Endereço Cedente'
+            self.fields.ENDERECO_CEDENTE
         )
         self.pdf_canvas.drawString(
             self.width - (30 * mm) + self.space,
             (((linha_inicial + 0) * self.height_line)) + self.delta_title,
-            'Valor Documento'
+            self.fields.VALOR_DOC
         )
 
         self.pdf_canvas.drawString(
             0,
             (((linha_inicial + 0) * self.height_line - 3 * cm)) +
             self.delta_title,
-            'Demonstrativo'
+            self.fields.DEMONSTRATIVO
         )
 
         # Values
@@ -441,7 +482,7 @@ class BoletoPDF(object):
         self.pdf_canvas.drawRightString(
             self.width,
             (1.5 * self.height_line) + self.delta_title - 1,
-            'Autenticação Mecânica / Ficha de Compensação'
+            self.fields.AUT_MEC_FICHA_COMP
         )
 
         # Primeira linha depois do codigo de barra
@@ -450,12 +491,21 @@ class BoletoPDF(object):
         self.__horizontalLine(0, y, self.width)
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
-            y + self.space, 'Código de baixa'
+            y + self.space,
+            self.fields.COD_DE_BAIXA
         )
-        self.pdf_canvas.drawString(0, y + self.space, 'Sacador / Avalista')
+        self.pdf_canvas.drawString(
+            0,
+            y + self.space,
+            self.fields.SACADOR_AVALISTA
+        )
 
         y += self.height_line
-        self.pdf_canvas.drawString(0, y + self.delta_title, 'Sacado')
+        self.pdf_canvas.drawString(
+            0,
+            y + self.delta_title,
+            self.fields.SACADO
+        )
         sacado = boleto_dados.sacado
 
         # Linha grossa dividindo o Sacado
@@ -477,7 +527,7 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            '(=) Valor cobrado'
+            self.fields.VALOR_COBRADO
         )
 
         # Campos da direita
@@ -486,7 +536,7 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            '(+) Outros acréscimos'
+            self.fields.OUTROS_ACRESCIMOS
         )
 
         y += self.height_line
@@ -494,7 +544,7 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            '(+) Mora/Multa'
+            self.fields.MORA_MULTA
         )
 
         y += self.height_line
@@ -502,7 +552,7 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            '(-) Outras deduções'
+            self.fields.OUTRAS_DEDUCOES
         )
 
         y += self.height_line
@@ -510,12 +560,12 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            '(-) Descontos/Abatimentos'
+            self.fields.DESCONTOS_ABATIMENTOS
         )
         self.pdf_canvas.drawString(
             0,
             y + self.delta_title,
-            'Instruções'
+            self.fields.INSTRUCOES
         )
 
         self.pdf_canvas.setFont('Helvetica', self.font_size_value)
@@ -531,20 +581,24 @@ class BoletoPDF(object):
         # Linha horizontal com primeiro campo Uso do Banco
         y += self.height_line
         self.__horizontalLine(0, y, self.width)
-        self.pdf_canvas.drawString(0, y + self.delta_title, 'Uso do banco')
+        self.pdf_canvas.drawString(
+            0,
+            y + self.delta_title,
+            self.fields.USO_BANCO
+        )
 
         self.__verticalLine((30) * mm, y, 2 * self.height_line)
         self.pdf_canvas.drawString(
             (30 * mm) + self.space,
             y + self.delta_title,
-            'Carteira'
+            self.fields.CARTEIRA
         )
 
         self.__verticalLine((30 + 20) * mm, y, self.height_line)
         self.pdf_canvas.drawString(
             ((30 + 20) * mm) + self.space,
             y + self.delta_title,
-            'Espécie'
+            self.fields.ESPECIE
         )
 
         self.__verticalLine(
@@ -555,18 +609,21 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             ((30 + 40) * mm) + self.space,
             y + self.delta_title,
-            'Quantidade'
+            self.fields.QUANTIDADE
         )
 
         self.__verticalLine(
             (30 + 20 + 20 + 20 + 20) * mm, y, 2 * self.height_line)
         self.pdf_canvas.drawString(
-            ((30 + 40 + 40) * mm) + self.space, y + self.delta_title, 'Valor')
+            ((30 + 40 + 40) * mm) + self.space,
+            y + self.delta_title,
+            self.fields.VALOR
+        )
 
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            '(=) Valor documento'
+            self.fields.VALOR_DOC_SIGN
         )
 
         self.pdf_canvas.setFont('Helvetica', self.font_size_value)
@@ -607,17 +664,17 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             0,
             y + self.delta_title,
-            'Data do documento'
+            self.fields.DATA_DOCUMENTO
         )
         self.pdf_canvas.drawString(
             (30 * mm) + self.space,
             y + self.delta_title,
-            'N. do documento'
+            self.fields.NUM_DOCUMENTO
         )
         self.pdf_canvas.drawString(
             ((30 + 40) * mm) + self.space,
             y + self.delta_title,
-            'Espécie doc'
+            self.fields.ESPECIE_DOC
         )
         self.__verticalLine(
             (30 + 20 + 20 + 20) * mm,
@@ -627,17 +684,17 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             ((30 + 40 + 20) * mm) + self.space,
             y + self.delta_title,
-            'Aceite'
+            self.fields.ACEITE
         )
         self.pdf_canvas.drawString(
             ((30 + 40 + 40) * mm) + self.space,
             y + self.delta_title,
-            'Data processamento'
+            self.fields.DATA_PROCESSAMENTO
         )
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            'Nosso número'
+            self.fields.NOSSO_NUMERO
         )
 
         self.pdf_canvas.setFont('Helvetica', self.font_size_value)
@@ -676,11 +733,15 @@ class BoletoPDF(object):
         # Linha horizontal com primeiro campo Cedente
         y += self.height_line
         self.__horizontalLine(0, y, self.width)
-        self.pdf_canvas.drawString(0, y + self.delta_title, 'Cedente')
+        self.pdf_canvas.drawString(
+            0,
+            y + self.delta_title,
+            self.fields.CEDENTE
+        )
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            'Agência/Código cedente'
+            self.fields.AG_COD_CEDENTE
         )
 
         self.pdf_canvas.setFont('Helvetica', self.font_size_value)
@@ -698,12 +759,12 @@ class BoletoPDF(object):
         self.pdf_canvas.drawString(
             0,
             y + self.delta_title,
-            'Local de pagamento'
+            self.fields.LOCAL_PAGAMENTO
         )
         self.pdf_canvas.drawString(
             self.width - (45 * mm) + self.space,
             y + self.delta_title,
-            'Vencimento'
+            self.fields.VENCIMENTO
         )
 
         self.pdf_canvas.setFont('Helvetica', self.font_size_value)
@@ -806,6 +867,10 @@ class BoletoPDF(object):
             Deve ser subclasse de :class:`pyboleto.data.BoletoData`
         :type boleto_dados: :class:`pyboleto.data.BoletoData`
         """
+        if hasattr(boleto_dados, 'fields'):
+            assert issubclass(boleto_dados.fields, BoletoFields)
+            self.fields = boleto_dados.fields
+
         x = 9 * mm  # margem esquerda
         y = 10 * mm  # margem inferior
 
