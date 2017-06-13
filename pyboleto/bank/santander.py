@@ -77,6 +77,8 @@ class BoletoRegistradoSantander(BoletoSantander):
     '''
 
     def __init__(self, **kwargs):
+        self.linha_dig = kwargs.pop('linha_dig', '')
+        self.codigo_barras = kwargs.pop('codigo_barras', '')
         super(BoletoRegistradoSantander, self).__init__(**kwargs)
 
         self.carteira = '101'
@@ -105,8 +107,8 @@ class BoletoRegistradoSantander(BoletoSantander):
 
     @property
     def linha_digitavel(self):
-        if self.code_line:
-            return self.code_line
+        if self.linha_dig:
+            return self.linha_dig
 
         return super(BoletoRegistradoSantander, self).linha_digitavel
 
