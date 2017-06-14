@@ -171,6 +171,48 @@ class BoletoData(object):
         self._valor = None
         self._valor_documento = None
 
+    def _validate_str_length(self, value, length, attr):
+        need_validate = (
+            length != -1
+        )
+        if need_validate and len(value) != length:
+            raise ValueError(
+                "{classname}.{attr} must have a length of "
+                "{expected_length}, not {attr_length}".format(
+                    classname=self.__class__.__name__,
+                    attr=attr,
+                    expected_length=length,
+                    attr_length=len(value)
+                )
+            )
+
+    def _validate_type(self, value, data_type, attr):
+        if not isinstance(value, data_type):
+            raise TypeError(
+                "{classname}.{attr} must be a {datatype} instance, "
+                "got {value_type}".format(
+                    classname=self.__class__.__name__,
+                    attr=attr,
+                    datatype=repr(data_type),
+                    value_type=repr(type(value))
+                )
+            )
+
+    def validate_barcode_fields(self):
+        fields_structure = [
+            ('codigo_banco', 3, basestring),
+            ('moeda', 1, basestring),
+            ('data_vencimento', None, datetime.date),
+            ('valor_documento', -1, basestring),
+            ('campo_livre', 25, basestring)
+        ]
+        for attr, length, data_type in fields_structure:
+            value = getattr(self, attr)
+            self._validate_type(value, data_type, attr)
+
+            if data_type == basestring:
+                self._validate_str_length(value, length, attr)
+
     @property
     def barcode(self):
         """Essa função sempre é a mesma para todos os bancos. Então basta
@@ -186,34 +228,15 @@ class BoletoData(object):
         20 a 44  25  Campo Livre definido por cada banco
         Total    44
         """
-
-        for attr, length, data_type in [
-                ('codigo_banco', 3, str),
-                ('moeda', 1, str),
-                ('data_vencimento', None, datetime.date),
-                ('valor_documento', -1, str),
-                ('campo_livre', 25, str)]:
-            value = getattr(self, attr)
-            if not isinstance(value, data_type):
-                raise TypeError("%s.%s must be a %s, got %r (type %s)" % (
-                    self.__class__.__name__, attr, data_type.__name__, value,
-                    type(value).__name__))
-            if (data_type == str and
-                    length != -1 and
-                    len(value) != length):
-                raise ValueError(
-                    "%s.%s must have a length of %d, not %r (len: %d)" %
-                    (self.__class__.__name__,
-                     attr,
-                     length,
-                     value,
-                     len(value)))
-
+        self.validate_barcode_fields()
         due_date_days = (self.data_vencimento - _EPOCH).days
+
         if not (9999 >= due_date_days >= 0):
             raise TypeError(
-                "Invalid date, must be between 1997/07/01 and "
-                "2024/11/15")
+                "Invalid date, must be between "
+                "1997/07/01 and 2024/11/15"
+            )
+
         num = "%s%1s%04d%010d%24s" % (self.codigo_banco,
                                       self.moeda,
                                       due_date_days,
@@ -342,7 +365,7 @@ class BoletoData(object):
         return self._instrucoes
 
     def _instrucoes_set(self, list_inst):
-        if isinstance(list_inst, str):
+        if isinstance(list_inst, basestring):
             list_inst = list_inst.splitlines()
 
         if len(list_inst) > 7:
@@ -366,7 +389,7 @@ class BoletoData(object):
         return self._demonstrativo
 
     def _demonstrativo_set(self, list_dem):
-        if isinstance(list_dem, str):
+        if isinstance(list_dem, basestring):
             list_dem = list_dem.splitlines()
 
         if len(list_dem) > 12:
@@ -451,7 +474,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo10(num):
-        if not isinstance(num, str):
+        if not isinstance(num, basestring):
             raise TypeError
         soma = 0
         peso = 2
@@ -476,7 +499,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo11(num, base=9, r=0):
-        if not isinstance(num, str):
+        if not isinstance(num, basestring):
             raise TypeError
         soma = 0
         fator = 2
