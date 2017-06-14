@@ -171,42 +171,47 @@ class BoletoData(object):
         self._valor = None
         self._valor_documento = None
 
+    def _validate_str_length(self, value, length, attr):
+        need_validate = (
+            length != -1
+        )
+        if need_validate and len(value) != length:
+            raise ValueError(
+                "{classname}.{attr} must have a length of "
+                "{expected_length}, not {attr_length}".format(
+                    classname=self.__class__.__name__,
+                    attr=attr,
+                    expected_length=length,
+                    attr_length=len(value)
+                )
+            )
+
+    def _validate_type(self, value, data_type, attr):
+        if not isinstance(value, data_type):
+            raise TypeError(
+                "{classname}.{attr} must be a {datatype} instance, "
+                "got {value_type}".format(
+                    classname=self.__class__.__name__,
+                    attr=attr,
+                    datatype=repr(data_type),
+                    value_type=repr(type(value))
+                )
+            )
+
     def validate_barcode_fields(self):
         fields_structure = [
-            ('codigo_banco', 3, (str, unicode)),
-            ('moeda', 1, (str, unicode)),
+            ('codigo_banco', 3, basestring),
+            ('moeda', 1, basestring),
             ('data_vencimento', None, datetime.date),
-            ('valor_documento', -1, (str, unicode)),
-            ('campo_livre', 25, (str, unicode))
+            ('valor_documento', -1, basestring),
+            ('campo_livre', 25, basestring)
         ]
         for attr, length, data_type in fields_structure:
             value = getattr(self, attr)
-            if not isinstance(value, data_type):
-                raise TypeError(
-                    "{classname}.{attr} must be a {datatype} instance, "
-                    "got {value_type}".format(
-                        classname=self.__class__.__name__,
-                        attr=attr,
-                        datatype=repr(data_type),
-                        value_type=repr(type(value))
-                    )
-                )
+            self._validate_type(value, data_type, attr)
 
-            wrong_length_str = (
-                data_type == (str, unicode) and
-                length != -1 and
-                len(value) != length
-            )
-            if wrong_length_str:
-                raise ValueError(
-                    "{classname}.{attr} must have a length of "
-                    "{expected_length}, not {attr_length}".format(
-                        classname=self.__class__.__name__,
-                        attr=attr,
-                        expected_length=length,
-                        attr_length=len(value)
-                    )
-                )
+            if data_type == basestring:
+                self._validate_str_length(value, length, attr)
 
     @property
     def barcode(self):
@@ -360,7 +365,7 @@ class BoletoData(object):
         return self._instrucoes
 
     def _instrucoes_set(self, list_inst):
-        if isinstance(list_inst, (str, unicode)):
+        if isinstance(list_inst, basestring):
             list_inst = list_inst.splitlines()
 
         if len(list_inst) > 7:
@@ -384,7 +389,7 @@ class BoletoData(object):
         return self._demonstrativo
 
     def _demonstrativo_set(self, list_dem):
-        if isinstance(list_dem, (str, unicode)):
+        if isinstance(list_dem, basestring):
             list_dem = list_dem.splitlines()
 
         if len(list_dem) > 12:
@@ -469,7 +474,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo10(num):
-        if not isinstance(num, (str, unicode)):
+        if not isinstance(num, basestring):
             raise TypeError
         soma = 0
         peso = 2
@@ -494,7 +499,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo11(num, base=9, r=0):
-        if not isinstance(num, (str, unicode)):
+        if not isinstance(num, basestring):
             raise TypeError
         soma = 0
         fator = 2
