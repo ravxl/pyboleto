@@ -37,15 +37,21 @@ class BoletoBradesco(BoletoData):
 
     @property
     def dv_nosso_numero(self):
-        resto2 = self.modulo11(self.nosso_numero, 7, 1)
-        digito = 11 - resto2
-        if digito == 10:
-            dv = 'P'
-        elif digito == 11:
-            dv = 0
+        numero = self.carteira + self.nosso_numero
+        resto = self.modulo11(
+            num=numero,
+            base=7,
+            r=1
+        )
+
+        if resto == 1:
+            digito = 'P'
+        elif resto == 0:
+            digito = resto
         else:
-            dv = digito
-        return dv
+            digito = 11 - resto
+
+        return digito
 
     @property
     def campo_livre(self):
