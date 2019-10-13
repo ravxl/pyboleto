@@ -200,17 +200,17 @@ class BoletoData(object):
 
     def validate_barcode_fields(self):
         fields_structure = [
-            ('codigo_banco', 3, basestring),
-            ('moeda', 1, basestring),
+            ('codigo_banco', 3, str),
+            ('moeda', 1, str),
             ('data_vencimento', None, datetime.date),
-            ('valor_documento', -1, basestring),
-            ('campo_livre', 25, basestring)
+            ('valor_documento', -1, str),
+            ('campo_livre', 25, str)
         ]
         for attr, length, data_type in fields_structure:
             value = getattr(self, attr)
             self._validate_type(value, data_type, attr)
 
-            if data_type == basestring:
+            if data_type == str:
                 self._validate_str_length(value, length, attr)
 
     @property
@@ -365,7 +365,7 @@ class BoletoData(object):
         return self._instrucoes
 
     def _instrucoes_set(self, list_inst):
-        if isinstance(list_inst, basestring):
+        if isinstance(list_inst, str):
             list_inst = list_inst.splitlines()
 
         if len(list_inst) > 7:
@@ -389,7 +389,7 @@ class BoletoData(object):
         return self._demonstrativo
 
     def _demonstrativo_set(self, list_dem):
-        if isinstance(list_dem, basestring):
+        if isinstance(list_dem, str):
             list_dem = list_dem.splitlines()
 
         if len(list_dem) > 12:
@@ -474,7 +474,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo10(num):
-        if not isinstance(num, basestring):
+        if not isinstance(num, str):
             raise TypeError
         soma = 0
         peso = 2
@@ -499,7 +499,7 @@ class BoletoData(object):
 
     @staticmethod
     def modulo11(num, base=9, r=0):
-        if not isinstance(num, basestring):
+        if not isinstance(num, str):
             raise TypeError
         soma = 0
         fator = 2
